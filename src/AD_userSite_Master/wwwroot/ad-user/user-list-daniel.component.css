@@ -1,0 +1,38 @@
+﻿body,
+md-content {
+  background-color: #f5f5f5 !important;
+}
+
+body > md-toolbar {
+  z-index: 3;
+}
+
+md-toolbar.md-table-toolbar.alternate {
+  color: #77d8d8!important;
+  background-color: #e3f2fd;
+}
+
+md-toolbar.md-table-toolbar.alternate .md-toolbar-tools {
+  font-size: 16px;
+}
+
+md-card:first-child {
+  padding: 8px 8px 8px 24px;
+}
+
+.checkboxes > md-checkbox {
+  margin: 0;
+  padding: 16px;
+  min-width: 300px;
+  flex: 0 0 auto;
+}
+::-webkit-input-placeholder {
+   color: white;
+   font-size:16px;
+}
+
+md-sidenav, md-sidenav.md-locked-open, md-sidenav.md-closed.md-locked-open-add-active {
+ min-width: 300px !important;
+ width: 30vw !important;
+ max-width: 650px !important;
+}

@@ -1,0 +1,30 @@
+﻿<!--<h1>Peter van Hemert</h1>
+<span class="md-headline">Add new user to AD {{model.user.firstName}} ..</span>
+<md-button class="md-raised" ng-click="model.cancel()">Cancel</md-button>
+<md-button class="md-raised" ng-click="model.delete()">Delete</md-button>-->
+
+<div style="visibility: hidden">
+    <md-card>
+        <div class="md-dialog-container" id="myDialog">
+            <md-dialog layout-padding>
+
+                <md-card style="color: red; text-align: center">
+                    <h2>Delete User</h2>
+                </md-card>
+                <h3>Are you shore to delete {{model.user.firstName}} {{model.user.lastName}} from AD? </h3>
+
+                <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                    <md-button class="md-raised" ng-click="model.cancelDelete()">Cancel</md-button>
+                    <md-button class="md-raised md-warn" ng-click="model.delete()">
+                        <md-icon>delete</md-icon>
+                        Delete
+                    </md-button>
+                </section>
+
+            </md-dialog>
+        </div>
+    </md-card>
+</div>
+
+
+

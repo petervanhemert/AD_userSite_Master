@@ -2,11 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AD_userSite_Master.ServerSide._00_CommonUtility.I_Contracts;
+using AD_userSite_Master.ServerSide._00_CommonUtility.I_Contracts.IRepo;
+using AD_userSite_Master.ServerSide._00_CommonUtility.I_Contracts.ISevices;
+using AD_userSite_Master.ServerSide._01_DataAccess;
+using AD_userSite_Master.ServerSide._01_DataAccess.Repo;
+using AD_userSite_Master.ServerSide._02_BusinessLogic.ServicesManager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 
 namespace AD_userSite_Master
 {
@@ -18,6 +26,7 @@ namespace AD_userSite_Master
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("config.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -27,8 +36,17 @@ namespace AD_userSite_Master
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IUoW, UoW>();
+            services.AddScoped<IUserRepo, UserRepo>();
+            services.AddScoped<IUserServices, UserServices>();
+
+
+            var sqlConnectionString = Configuration["DataAccessMsSqlServerProvider:ConnectionString"];
+            services.AddDbContext<DataContext>(options =>
+            options.UseSqlServer(sqlConnectionString));
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(opt => opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

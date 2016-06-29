@@ -1,0 +1,152 @@
+﻿<!--<md-card class="md-warn">
+    <div class="md-toolbar-tools">
+        <h2 class="md-flex">AD User</h2>
+    </div>
+</md-card>
+
+<md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">Add new user to AD {{model.user.firstName}} ..</span>
+
+        </md-card-title-text>
+    </md-card-title>
+    <form novalidate name="userForm" ng-submit="model.editUser()">
+        <md-card-content>
+
+            <md-content flex layout-padding>
+
+                <div layout="column" ng-cloak class="md-inline-form">
+
+                    <md-content layout-padding>
+
+                        <md-content layout-padding layout-gt-sm="column">
+
+                            <md-input-container layout-gt-sm="row">
+                                <md-input-container ng-show="!required" flex-gt-sm>
+                                    <label>Account</label>
+                                    <input style="color: black" ng-model="model.user.accountName" ng-required="!required" md-no-asterisk name="accountName">
+                                    <div ng-messages="userForm.accountName.$error">
+                                        <div ng-message="required">This is required if internal user.</div>
+                                    </div>
+                                </md-input-container>
+                                <div flex="5" hide-xs hide-sm>
+                                 
+                                </div>
+                                <md-input-container flex-gt-sm>
+                                    <md-checkbox ng-model="required" id="required">
+                                        External user: {{ model.user.externalUser }}
+                                    </md-checkbox>
+                                </md-input-container>
+                            </md-input-container>
+
+                            <md-input-container class="md-block">
+                                <label>Firstname</label>
+                                <input style="color: black" required ng-model="model.user.firstName" md-no-asterisk name="firstname">
+                                <div ng-messages="userForm.firstname.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container class="md-block">
+                                <label>Lastname</label>
+                                <input style="color: black" required ng-model="model.user.lastName" md-no-asterisk name="lastname">
+                                <div ng-messages="userForm.lastname.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container class="md-block">
+                                <label>Email</label>
+                                <input style="color: black" required ng-model="model.user.email" type="email" md-no-asterisk name="email">
+                                <div ng-messages="userForm.email.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>
+                        </md-content>
+
+                    </md-content>
+
+                </div>
+
+            </md-content>
+
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="center">
+            <md-button class="md-raised" ng-click="model.clear()">Clear</md-button>
+            <md-button class="md-raised md-primary md-active" type="submit" value="Edit" ng-disabled="userForm.$invalid">Save</md-button>
+        </md-card-actions>
+    </form>
+</md-card>-->
+
+<div md-panel class="md-padding">
+    <md-card class="colorLB">
+
+        <h4>
+            Edit user
+        </h4>
+
+    </md-card>
+
+    <md-card>
+        prestine: {{userform.$pristine}}
+        <form style="padding-left: 15px" novalidate name="userform" ng-submit="model.editUser()">
+            <div layout="column" ng-cloak>
+
+                <md-input-container layout-gt-sm="row">
+                    
+                    <div ng-show="!model.user.externalUser" flex-gt-sm class="md-block">
+                        <label>Accountname</label>
+                        <input ng-model="model.user.accountName" ng-required="!model.user.externalUser" md-no-asterisk name="accountName">
+                        <div ng-messages="userform.accountName.$error" ng-show="userform.accountName.$touched">
+                            <div ng-message="required">This is required if internal user.</div>
+                        </div>
+                    </div>
+                    <div flex="5" hide-xs hide-sm>
+                        <!-- Spacer //-->
+                    </div>
+                    <div flex-gt-sm class="md-block">
+                        <md-checkbox ng-model="model.user.externalUser" id="required">
+                            External user {{ model.user.externalUser }}
+                        </md-checkbox>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Firstname</label>
+                    <input required ng-model="model.user.firstName" md-no-asterisk name="firstName">
+                    <div ng-messages="userform.firstName.$error" ng-show="userform.firstName.$touched">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Lastname</label>
+                    <input required ng-model="model.user.lastName" md-no-asterisk name="lastName">
+                    <div ng-messages="userform.lastName.$error" ng-show="userform.lastName.$touched">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Email</label>
+                    <input required ng-model="model.user.email" type="email" md-no-asterisk name="email">
+                    <div ng-messages="userform.email.$error" ng-show="userform.email.$touched">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <md-card-actions layout="row" layout-align="center">
+                
+                <md-button class="md-raised" ng-click="model.closeSidenav()">Close</md-button>
+                <md-button class="md-raised md-primary md-active" type="submit" value="Add" ng-disabled="userform.$invalid || userform.$pristine">Save</md-button>
+            </md-card-actions>
+        </form>
+
+    </md-card>
+
+
+
+
+</div>

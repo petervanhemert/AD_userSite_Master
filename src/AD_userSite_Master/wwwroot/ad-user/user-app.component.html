@@ -1,0 +1,20 @@
+﻿<md-content class="md-padding">
+    <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+        <md-nav-item ng-link="['List']" md-nav-click="['List']" name="list">users list</md-nav-item>
+
+        <!--<md-nav-item ng-link="['Listdaniel']" md-nav-click="['Listdaniel']" name="listdaniel">users list Daniel</md-nav-item>-->
+
+        <md-nav-item ng-link="['Add']" md-nav-click="['Add']" name="add">New user</md-nav-item>       
+    </md-nav-bar>
+
+
+    <div class="container">
+
+        <ng-outlet></ng-outlet>
+
+    </div>
+
+
+</md-content>
+
+

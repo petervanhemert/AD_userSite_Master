@@ -1,0 +1,125 @@
+﻿<div md-panel class="md-padding">
+    <md-card class="colorLB">
+        <h4>
+            Add new user to Active Directory
+
+            <!--<md-button class="md-fab md-mini" ng-click="model.showToast('success', 'Deze text is een template')">
+                <md-icon>close</md-icon>
+            </md-button>-->
+        </h4>
+    </md-card>
+    <md-card>
+        <form style="padding-left: 15px" novalidate name="userform" ng-submit="model.addUser()">
+            <div layout="column" ng-cloak>
+
+                <md-input-container layout-gt-sm="row">
+                    <div ng-show="!model.user.externalUser">
+                        <label style="font-weight: bolder">Account</label>
+                        <input ng-model="model.user.accountName" ng-required="!model.user.externalUser" md-no-asterisk name="accountName" ng-blur='model.checkIfAccountnameIsUnique(model.user.accountName)'>
+                        <div ng-messages="userform.accountName.$error" ng-show="userform.accountName.$touched">
+                            <div ng-message="required">This is required if internal user.</div>
+                        </div>
+                        <span ng-show="!model.user.externalUser && !model.accountnameIsUnique && userform.accountName.$invalid && !userform.accountName.$dirty " style="color: red; font-size: small">
+                            Accountname already in use!
+                        </span>
+                    </div>
+                    <span ng-show="!model.user.externalUser && model.accountnameIsUnique && userform.accountName.$valid && !userform.accountName.$dirty ">
+                        <md-icon style="color: green;">check</md-icon>
+                    </span>
+                    <span style="color: red; font-size: small" ng-show="!model.user.externalUser && !model.accountnameIsUnique && userform.accountName.$invalid && !userform.accountName.$dirty ">
+                        <md-icon style="color: red;">close</md-icon>
+                    </span>
+                    <div flex="5" hide-xs hide-sm>
+
+                    </div>
+                    <div>
+                        <md-checkbox style="font-size: smaller" ng-model="model.user.externalUser" id="required" ng-change="model.setAccountNameToUnique()">
+                            Check if external user.
+                        </md-checkbox>
+                        <span ng-show="model.user.externalUser">
+                            <md-icon style="color: green;">check</md-icon>
+                        </span>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Firstname</label>
+                    <input required ng-model="model.user.firstName" md-no-asterisk name="firstname" ng-blur='model.checkIfFullnameExist()'>
+                    <span ng-show="!model.doubleUser && userform.firstname.$valid && !userform.firstname.$dirty"><md-icon style="color: green;">check</md-icon></span>
+                    <span ng-show="model.doubleUser && !userform.firstname.$dirty && !userform.lastname.$dirty && userform.firstname.$invalid" style="color: red; font-size: small"><md-icon style="color: red;">close</md-icon></span>
+                    <div ng-messages="userform.firstname.$error" ng-show="userform.firstname.$touched">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Lastname</label>
+                    <input required ng-model="model.user.lastName" md-no-asterisk name="lastname" ng-blur='model.checkIfFullnameExist()'>
+                    <span ng-show="!model.doubleUser && userform.lastname.$valid && !userform.lastname.$dirty"><md-icon style="color: green;">check</md-icon></span>
+                    <span ng-show="model.doubleUser && !userform.firstname.$dirty && !userform.lastname.$dirty && userform.lastname.$invalid" style="color: red; font-size: small"><md-icon style="color: red;">close</md-icon></span>
+
+                    <div ng-messages="userform.lastname.$error" ng-show="userform.lastname.$touched">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Email</label>
+                    <input required2="model.emailAlreadyExist" required ng-model="model.user.email" type="email" md-no-asterisk name="email" ng-blur='model.checkIfEmailExist()'>
+                    <span ng-show="!model.emailExist && userform.email.$valid && !userform.email.$dirty">
+                        <md-icon style="color: green;">check</md-icon>
+                    </span>
+                    <span style="color: red; font-size: small" ng-show="model.emailExist && !userform.email.$dirty && userform.email.$valid">
+                        <md-icon style="color: red;">close</md-icon>
+                    </span>
+                    <div style="color: red; font-size: small" ng-show="model.emailExist && !userform.email.$dirty && userform.email.$valid">
+                        <br />eMail already registered!
+                    </div>
+
+                    <div ng-messages="userform.email.$error" ng-show="userform.email.$touched">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <md-card-actions layout="row" layout-align="center">
+                <md-button class="md-raised" ng-click="model.closeSidenav()" ng-show="model.sideNavActive">Close</md-button>
+                <md-button class="md-raised" ng-click="model.clear()">Clear</md-button>
+                <md-button class="md-raised md-primary md-active"
+                           type="submit"
+                           value="Add"
+                           ng-disabled="!model.accountnameIsUniqueChecked  || userform.$invalid || model.emailExist || !model.accountnameIsUnique || model.doubleUser">
+                    Save
+                </md-button>
+            </md-card-actions>
+        </form>
+    </md-card>
+</div>
+<div style="visibility: hidden">
+    <md-card>
+        <div class="md-dialog-container" id="doubleUserDialog">
+            <md-dialog layout-padding>
+
+                <md-card style="color: red; text-align: center">
+                    <h3>A User with the name</h3>
+                    <h2 style="color:black">"{{model.user.firstName}} {{model.user.lastName}}"</h2>
+                    <h3>already exist.</h3>
+                    <h3>Do you want to continue? </h3>
+                </md-card>
+
+
+                <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                    <md-button class="md-fab md-mini" ng-click="model.doubleUserDialogClose()">
+                        <md-icon>close</md-icon>
+                    </md-button>
+                    <md-button class="md-fab md-mini md-primary" ng-click="model.continueWithDoubleUser()">
+                        <md-icon style="color: greenyellow; ">check</md-icon>
+
+                    </md-button>
+                </section>
+
+            </md-dialog>
+        </div>
+    </md-card>
+</div>

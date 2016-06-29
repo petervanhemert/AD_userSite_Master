@@ -1,0 +1,122 @@
+﻿<md-content layout="column" style="min-height: 700px" flex ng-cloak>
+
+    <md-card class="colorLB">
+        <div class="md-hue-5, md-table-toolbar" ng-hide="model.options.rowSelection && model.selected.length">
+            <div class="md-toolbar-tools">
+                <md-button ng-click="model.openSideNav('addUser')"
+                           class="md-fab md-primary">
+                    <md-icon style="color: greenyellow;">person_add</md-icon>
+                </md-button>
+                <span style="padding-left: 30px">All active directory users</span>
+                <div flex></div>
+                <md-input-container md-no-float style="
+                                                                                                                                                                                                                                  margin-bottom: 0px;
+                                                                                                                                                                                                                                  margin-top: 25px;
+                                                                                                                                                                                                                                  padding-right: 10px;
+                                                                                                                                                                                                                                  width: 296px;">
+                    <md-icon>search</md-icon>
+                    <input type="text" ng-model="nathi" placeholder="Search">
+                </md-input-container>
+                <md-button class="md-fab md-mini"
+                           aria-label="Refresh"
+                           ng-click="model.loadStuff()">
+                    <md-icon>refresh</md-icon>
+                </md-button>
+            </div>
+        </div>
+    </md-card>
+
+    <md-card>
+        <md-table-container>
+            <table md-table md-row-select="options.rowSelection" multiple="{{model.options.multiSelect}}" ng-model="model.selected" md-progress="model.promise">
+                <thead ng-if="!model.options.decapitate" md-head md-order="model.query.order" md-on-reorder="logOrder">
+                <tr md-row>
+                    <th md-column md-order-by="accountName" md-desc><span>AccountName</span></th>
+                    <th md-column md-order-by="firstName"><span>Firstname</span></th>
+                    <th md-column md-order-by="lastName"><span>LastName</span></th>
+                    <th md-column md-order-by="email"><span>eMail</span></th>
+                    <th md-column>
+
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="5">
+                        <md-progress-linear md-mode="indeterminate" ng-show="model.promise"></md-progress-linear>
+                    </th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row md-select="user" md-on-select="logItem" md-auto-select="options.autoSelect" ng-repeat="user in model.users | filter: nathi | orderBy: model.query.order | limitTo: model.query.limit : (model.query.page -1) * model.query.limit">
+                    <td md-cell>{{user.accountName}}</td>
+                    <td md-cell>{{user.firstName}}</td>
+                    <td md-cell>{{user.lastName}}</td>
+                    <td md-cell>{{user.email }}</td>
+                    <td md-cell layout="row" layout-align="center center">
+                        <md-button ng-click="model.openSideNav('editUser', user)"
+                                   class="md-fab md-mini md-primary"
+                                   style="color: greenyellow;">
+                            <md-icon>mode_edit</md-icon>
+                        </md-button>
+                        <!--<md-button ng-click="model.deleteUser()"
+                                   class="md-fab md-mini md-warn"
+                                   aria-label="Delete user">
+                            <md-icon>delete</md-icon>
+                        </md-button>-->
+                        <md-button ng-click="model.deleteUser(user)"
+                                   class="md-fab md-mini md-warn"
+                                   aria-label="Delete user">
+                            <md-icon>delete</md-icon>
+                        </md-button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <md-table-pagination md-limit="model.query.limit" md-limit-options="model.limitOptions" md-page="model.query.page" md-total="{{model.users.count}}" md-page-select="options.pageSelect" md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>
+    </md-card>
+</md-content>
+
+<md-sidenav class="md-sidenav-right  md-whiteframe-z2 md-backdrop" md-component-id="addUser">
+    <md-toolbar layout="row">
+        <h1 class="md-toolbar-tools">Add new user</h1>
+    </md-toolbar>
+    <md-content layout-padding>
+        <user-add value="model.sideNav" toast="model.showToast(type, text)" close="model.closeSidenav(navID)"></user-add>
+    </md-content>
+</md-sidenav>
+
+
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="editUser">
+    <md-toolbar class="md-theme-light">
+        <h1 class="md-toolbar-tools">Edit user</h1>
+    </md-toolbar>
+    <md-content layout-padding>
+        <user-edit value="model.selectedUser" close="model.closeSidenav(navID)"></user-edit>
+    </md-content>
+</md-sidenav>
+
+<!--<user-delete deleteUser="deleteUser()" value="model.selectedUser.accountName"></user-delete>-->
+<div style="visibility: hidden">
+    <md-card>
+        <div class="md-dialog-container" id="myDialog">
+            <md-dialog layout-padding>
+
+                <!--<user-delete  value="model.selectedUser"></user-delete>-->
+
+                <md-card style="color: red; text-align: center">
+                    <h2>Delete User</h2>
+                </md-card>
+                <h3>Are you shore to delete {{model.selectedUser.firstName}} {{model.selectedUser.lastName}} from AD? </h3>
+
+                <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                    <md-button class="md-raised" ng-click="model.cancelDelete()">Cancel</md-button>
+                    <md-button class="md-raised md-warn" ng-click="model.delete()">
+                        <md-icon>delete</md-icon>
+                        Delete
+                    </md-button>
+                </section>
+
+            </md-dialog>
+        </div>
+    </md-card>
+</div>

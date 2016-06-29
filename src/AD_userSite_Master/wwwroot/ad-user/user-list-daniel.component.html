@@ -1,0 +1,158 @@
+﻿<md-content layout="column" flex>
+    <md-card>
+        <!--<md-toolbar class="md-table-toolbar" ng-hide="options.rowSelection && selected.length">
+        <div class="md-toolbar-tools">-->
+        <md-toolbar class="md-table-toolbar" ng-hide="options.rowSelection && selected.length">
+            <div class="md-toolbar-tools">
+                <span>All Users</span>
+                <div flex></div>
+                <md-input-container md-no-float style="
+                                    margin-bottom: 0px;
+                                    margin-top: 25px;
+                                    padding-right: 10px;
+                                    width: 296px;">
+                    <md-icon>search</md-icon>
+                    <input type="text" ng-model="nathi" placeholder="Search">
+                </md-input-container>
+                <!--<span>+ Add User</span>-->
+                <md-button ng-click="addUser()"
+                           ng-hide="isOpenaddUser()"
+                           class="md-icon-button">
+                    <md-icon>person_add</md-icon>
+
+                </md-button>
+                <!--<md-button class="md-icon-button" ng-click="loadStuff()">
+                    <md-icon>refresh</md-icon>
+                </md-button>-->
+                <md-button class="md-icon-button" ng-click="addItem()">
+                    <md-icon>add</md-icon>
+                </md-button>
+                <md-menu md-position-mode="target-right target" md-offset="0 50">
+                    <md-button ng-click="$mdOpenMenu($event)" aria-label="Group Settings" class="md-icon-button">
+                        <md-icon>more_vert</md-icon>
+                    </md-button>
+                    <md-menu-content width="3">
+                        <md-menu-item>
+                            <md-button ng-click="PowerBiCtrl.updateUser(user)">
+                                <i class="fa fa-pencil"></i> Export
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="PowerBiCtrl.updateUser(user)">
+                                <i class="fa fa-pencil"></i> Import
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </md-toolbar>
+
+        <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
+            <div class="md-toolbar-tools">
+                <span>{{selected.name}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
+            </div>
+        </md-toolbar>
+    </md-card>
+    <md-card>
+        <md-table-container>
+            <table md-table md-row-select="options.rowSelection" multiple="{{options.multiSelect}}" ng-model="selected" md-progress="promise">
+                <thead ng-if="!options.decapitate" md-head md-order="query.order" md-on-reorder="logOrder">
+                    <tr md-row>
+                        <th md-column md-order-by="name"><span>Dessert (100g serving)</span></th>
+                        <th md-column md-order-by="type"><span>Type</span></th>
+                        <th md-column md-numeric md-order-by="calories.value" md-desc><span>Calories</span></th>
+                        <th md-column md-numeric md-order-by="fat.value"><span>Fat (g)</span></th>
+                        <th md-column md-numeric md-order-by="carbs.value"><span>Carbs (g)</span></th>
+                        <th md-column md-numeric md-order-by="protein.value"><span>Protein (g)</span></th>
+                        <th md-column md-numeric md-order-by="sodium.value" hide-gt-xs show-gt-md><span>Sodium (mg)</span></th>
+                        <th md-column md-numeric md-order-by="calcium.value" hide-gt-xs show-gt-lg><span>Calcium (%)</span></th>
+                        <th md-column md-numeric md-order-by="iron.value" hide-gt-xs show-gt-lg><span>Iron (%)</span></th>
+                        <th md-column>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="dessert" md-on-select="logItem" md-auto-select="options.autoSelect" ng-disabled="dessert.calories.value > 400" ng-repeat="dessert in desserts.data | filter: nathi | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+                        <td md-cell>{{dessert.name}}</td>
+                        <td md-cell>
+                            <md-select ng-model="dessert.type" placeholder="Other">
+                                <md-option ng-value="type" ng-repeat="type in getTypes()">{{type}}</md-option>
+                            </md-select>
+                        </td>
+                        <td md-cell>{{dessert.calories.value}}</td>
+                        <td md-cell>{{dessert.fat.value | number: 2}}</td>
+                        <td md-cell>{{dessert.carbs.value}}</td>
+                        <td md-cell>{{dessert.protein.value | number: 2}}</td>
+                        <td md-cell hide-gt-xs show-gt-md>{{dessert.sodium.value}}</td>
+                        <td md-cell hide-gt-xs show-gt-lg>{{dessert.calcium.value}}%</td>
+                        <td md-cell hide-gt-xs show-gt-lg>{{dessert.iron.value}}%</td>
+                        <td md-cell ng-class="{'md-placeholder': !dessert.comment}">
+                            <md-button ng-click="buildToggler2('editUser', dessert)"
+                                       ng-hide="isOpenEditUser()"
+                                       class="md-icon-button">
+                                <md-icon>mode_edit</md-icon>
+                            </md-button>
+                            <!--<md-menu md-offset="0 -7">
+                                <md-button ng-click="$mdOpenMenu($event)" aria-label="Group Settings" class="md-icon-button">
+                                    <md-icon>more_vert</md-icon>
+                                </md-button>
+                                <md-menu-content width="2">
+                                    <md-menu-item>
+                                        <md-button ng-click="PowerBiCtrl.updateUser(user)">
+                                            <i class="fa fa-pencil"></i> Edit User
+                                        </md-button>
+                                        <md-button ng-click="toggleRight()"
+                                                   ng-hide="isOpenRight()"
+                                                   class="md-primary">
+                                            Toggle right
+                                        </md-button>
+
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>-->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+
+        <md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{desserts.count}}" md-page-select="options.pageSelect" md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>
+    </md-card>
+</md-content>
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="addUser">
+    <md-toolbar class="md-theme-light">
+        <h1 class="md-toolbar-tools">Sidenav Right</h1>
+    </md-toolbar>
+    <md-content layout-padding>
+        <user-add></user-add>
+        <!--<form>
+            <md-input-container>
+                <label for="testInput">Test input</label>
+                <input type="text" id="testInput"
+                       ng-model="data" md-autofocus>
+            </md-input-container>
+        </form>-->
+        <md-button ng-click="close('addUser')" class="md-primary">
+            Close Sidenav Right
+        </md-button>
+    </md-content>
+</md-sidenav>
+
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="editUser">
+    <md-toolbar class="md-theme-light">
+        <h1 class="md-toolbar-tools">Edit user</h1>
+    </md-toolbar>
+    <md-content layout-padding>
+        {{ik}}
+        <!--<form>
+            <md-input-container>
+                <label for="testInput">Test input</label>
+                <input type="text" id="testInput"
+                       ng-model="data" md-autofocus>
+            </md-input-container>
+        </form>-->
+        <md-button ng-click="close('editUser')" class="md-primary">
+            Close
+        </md-button>
+    </md-content>
+</md-sidenav>

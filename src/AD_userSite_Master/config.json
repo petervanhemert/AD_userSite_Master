@@ -1,0 +1,5 @@
+﻿{
+  "DataAccessMsSqlServerProvider": {
+    "ConnectionString": "Server=SERVER-DEV\\SQLEXPRESS;Database=AC_DB_02;Trusted_Connection=True;MultipleActiveResultSets=true;"
+  }
+}
